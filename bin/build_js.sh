@@ -1,4 +1,5 @@
 #!/bin/bash
 cat \
-app/scripts/app.js \
+app/scripts/_init.js \
+app/scripts/data.js \
 > build/scripts/app.js

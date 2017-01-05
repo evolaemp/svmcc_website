@@ -8,6 +8,7 @@ bin/build_html.sh
 bin/build_css.sh
 bin/build_js.sh
 bin/build_vendor.sh
+cp -r app/data -t build
 
 concurrently --raw --kill-others \
 	"chokidar 'app/templates/*.html' -c 'bin/build_html.sh'" \

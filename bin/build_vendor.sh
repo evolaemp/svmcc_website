@@ -3,6 +3,7 @@
 # bower_components/normalize-css/normalize.css \
 # > build/styles/vendor.css
 
-# cat \
-# bower_components/mustache.js/mustache.min.js \
-# > build/scripts/vendor.js
+cat \
+bower_components/fetch/fetch.js \
+bower_components/mustache.js/mustache.min.js \
+> build/scripts/vendor.js

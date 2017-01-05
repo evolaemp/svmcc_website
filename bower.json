@@ -1,0 +1,8 @@
+{
+  "name": "svmcc-website",
+  "private": true,
+  "dependencies": {
+    "fetch": "^2.0.1",
+    "mustache.js": "mustache#^2.3.0"
+  }
+}

@@ -20,7 +20,9 @@
 	<script src="scripts/app.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
-			app.init();
+			app.init({
+				DATA_URL: 'data/data.json'
+			});
 		});
 	</script>
 </body>
