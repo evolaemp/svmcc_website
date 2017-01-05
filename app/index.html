@@ -14,9 +14,16 @@
 <body>
 	<h1>svmcc</h1>
 	
-	<script id="data-templ" type="x-mustache"><!partial src="templates/data.html"></script>
+	<div id="data-view">
+		loading...
+	</div>
 	
-	<!--script src="scripts/vendor.js"></script-->
+	<script id="data-templ" type="x-mustache"><!partial src="templates/data.html"></script>
+	<script id="dataset-templ" type="x-mustache"><!partial src="templates/dataset.html"></script>
+	<script id="gloss-templ" type="x-mustache"><!partial src="templates/gloss.html"></script>
+	<script id="error-templ" type="x-mustache"><!partial src="templates/error.html"></script>
+	
+	<script src="scripts/vendor.js"></script>
 	<script src="scripts/app.js"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {

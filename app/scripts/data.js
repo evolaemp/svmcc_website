@@ -77,30 +77,34 @@ app.data = (function() {
 		return glosses;
 	};
 	
-	// returns an {} where the keys are cognate classes (as strings) and the
-	// values are []s of {lang, word} objects
+	// returns a [] of {cogClass, entries} objects where the entries are []s of
+	// {lang, word} objects
 	// 
 	// throws an error if the dataset or the gloss do not exist
 	var getGloss = function(dataset, gloss) {
-		var res = {}, i, cogClass;
+		var glossData, i, cog, cogs = {}, keys, res = [];
 		
 		dataset = getDataset(dataset);
 		
 		if(!dataset.hasOwnProperty(gloss)) {
 			throw new Error('Unknown gloss');
 		}
+		glossData = dataset[gloss];
 		
-		gloss = dataset[gloss];
-		
-		for(i = 0; i < gloss.length; i++) {
-			cogClass = gloss[i][2].toString();
-			if(!res.hasOwnProperty(cogClass)) {
-				res[cogClass] = [];
+		for(i = 0; i < glossData.length; i++) {
+			cog = glossData[i][2].toString();
+			
+			if(!cogs.hasOwnProperty(cog)) {
+				cogs[cog] = [];
 			}
-			res[cogClass].push({
-				lang: gloss[i][0],
-				word: gloss[i][1]
-			});
+			
+			cogs[cog].push({lang: glossData[i][0], word: glossData[i][1]});
+		}
+		
+		keys = Object.keys(cogs).sort();
+		for(i = 0; i < keys.length; i++) {
+			cog = keys[i];
+			res.push({cogClass: cog, entries: cogs[cog]});
 		}
 		
 		return res;
