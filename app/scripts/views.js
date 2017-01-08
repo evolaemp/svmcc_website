@@ -43,6 +43,7 @@ app.views = (function() {
 			createDataset(datasetViewElem, clicked.data('set'));
 		});
 		
+		buttons.first().click();
 	};
 	
 	// creates a dataset view
@@ -70,12 +71,28 @@ app.views = (function() {
 				}));
 			},
 			async: false,
-			limit: 10
+			limit: 666
 		});
 		
 		searchField.on('typeahead:select typeahead:autocomplete', function(e, value) {
 			createGloss(glossViewElem, dataset, value);
 		});
+		
+		// make enter work as expected
+		// https://github.com/twitter/typeahead.js/issues/1474
+		searchField.on('keydown', function(e) {
+			if(e.which == 13) {
+				var selectables = searchField.siblings('.tt-menu').find('.tt-selectable');
+				if(selectables.length > 0) {
+					selectables.first().trigger('click');
+				}
+				searchField.typeahead('close');
+			}
+		});
+		
+		// init a gloss view with the first gloss
+		searchField.typeahead('val', glosses[0]);
+		createGloss(glossViewElem, dataset, glosses[0]);
 	};
 	
 	// creates a gloss view
