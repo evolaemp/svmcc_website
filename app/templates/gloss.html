@@ -1,13 +1,26 @@
-{{# cogs }}
-<article class="cognate-class">
-	<h2>{{ cogClass }}</h2>
-	<ul>
-		{{# entries }}
-		<li>
-			<span class="lang">{{ lang }}</span>
-			<span class="word">{{ word }}</span>
-		</li>
-		{{/ entries }}
-	</ul>
-</article>
-{{/ cogs }}
+<section class="gloss">
+	{{# cogs }}
+	<article class="cognate-class">
+		<h2>Cognate class: <span class="cog-class-id">{{ cogClass }}</span></h2>
+
+		<table>
+			<tbody>
+				{{# entries }}
+				<tr>
+					<td class="lang">{{ lang }}</td>
+					<td class="word">{{ word }}</td>
+				</tr>
+				{{/ entries }}
+			</tbody>
+		</table>
+		<!-- <ul>
+			{{# entries }}
+			<li>
+				<span class="lang">{{ lang }}</span>
+				<span class="word">{{ word }}</span>
+			</li>
+			{{/ entries }}
+		</ul> -->
+	</article>
+	{{/ cogs }}
+</section>	

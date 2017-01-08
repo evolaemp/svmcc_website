@@ -1,0 +1,116 @@
+/*@import "bower_components/stellar/stellar";
+*/
+/* colours */
+
+/*
+@dark: #464150;
+@orange: #ff7454;
+@orange: #FF8165;
+@pumpkin: #FF9C39;
+@pumpkin: #FFAC54;
+@aquamarine: #7CCAD4;
+@aquamarine: #70CBCB;
+
+.font-serif {
+	font-family: "Noto Serif", serif;
+}
+
+.font-sans-serif {
+	font-family: "Noto Sans", sans-serif;
+}
+
+.box(@p: 0) {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	padding: @p;
+}*/
+
+@media (max-width: 1020px) {
+
+	.gloss {
+
+		.column(@center);
+	}
+}
+
+@media (max-width: 740px) {
+
+	.intro {
+
+		header {
+
+			h1 {
+				margin: 0;
+			}
+
+			h2 {
+				font-size: 18px;
+			}
+		}
+	}
+
+	.dataset {
+		height: 200px;
+
+		.cont {
+			.column(@left; @center);
+
+			h2 {
+				margin: 10px 0 20px 0;
+			}
+
+			input {
+				width: 400px;
+			}
+		}
+	}
+}
+
+@media (max-width: 550px) {
+
+	.intro {
+		padding: 30px;
+	}
+
+	.data {
+		padding: 30px;
+	}
+
+	.dataset {
+		padding: 0;
+
+		.cont {
+			width: 100%;
+
+			h2 {
+				margin-left: 30px;
+			}
+
+			input {
+				margin-left: 30px;
+				width: 100%;
+			}
+
+			.tt-menu {
+				margin-left: 30px;
+			}
+		}
+	}
+
+	.gloss {
+		padding: 30px;
+	}
+}
+
+@media (max-width: 400px) {
+
+	.dataset {
+
+		.cont {
+
+			input {
+				width: 250px;
+			}
+		}
+	}
+}

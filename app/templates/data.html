@@ -1,5 +1,15 @@
-{{# datasets }}
-<button type="button" data-fn="choose-dataset" data-set="{{ . }}">{{ . }}</button>
-{{/ datasets }}
+<section class="data">
+	<div class="cont">
+		<h3>Choose a dataset</h3>
+
+		<div class="datasets-cont">
+			{{# datasets }}
+			<div class="dataset-cont">
+				<button type="button" data-fn="choose-dataset" data-set="{{ . }}">{{ . }}</button>
+			</div>
+			{{/ datasets }}
+		</div>
+	</div>
+</section>
 
 <div id="dataset-view"></div>

@@ -5,6 +5,7 @@
     "fetch": "^2.0.1",
     "jquery": "^3.1.1",
     "mustache.js": "mustache#^2.3.0",
-    "typeahead.js": "^0.11.1"
+    "typeahead.js": "^0.11.1",
+    "stellar": "stellar-less#~0.3.1"
   }
 }
