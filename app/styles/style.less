@@ -193,6 +193,16 @@ button {
 		&::-moz-placeholder {
 			font-weight: normal;
 		}
+
+		&::-webkit-placeholder {
+			font-weight: normal;
+		}
+
+		&::placeholder {
+			font-weight: normal;
+		}
+
+
 	}
 
 	.tt-menu {
@@ -218,6 +228,32 @@ button {
 	}
 }
 
+.switch {
+	.row(@center; @center);
+
+	input {
+		display: none;
+	}
+
+	label {
+		.font-sans-serif;
+
+		color: @dark;
+		cursor: pointer;
+		font-size: 14px;
+		font-weight: bold;
+	}
+
+	.btn {
+		background: @dark;
+		border-radius: 50%;
+		display: block;
+		height: 30px;
+		margin: 0 5px;
+		width: 30px;
+	}
+}
+
 .gloss {
 	.row();
 
@@ -225,7 +261,6 @@ button {
 	padding: 0 50px 50px 50px;
 	margin: 0 auto;
 	max-width: 920px;
-
 
 	.cognate-class {
 		.box(@p: 20px);
