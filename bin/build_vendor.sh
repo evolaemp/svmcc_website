@@ -1,8 +1,3 @@
-#!/bin/bash
-# cat \
-# bower_components/normalize-css/normalize.css \
-# > build/styles/vendor.css
-
 cat \
 bower_components/jquery/dist/jquery.slim.js \
 bower_components/fetch/fetch.js \
