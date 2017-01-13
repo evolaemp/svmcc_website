@@ -80,9 +80,14 @@ app.data = (function() {
 	// returns a [] of {cogClass, entries} objects where the entries are []s of
 	// {lang, word} objects
 	// 
+	// the last argument must be one of: expert, lexstat, svm
+	// 
 	// throws an error if the dataset or the gloss do not exist
-	var getGloss = function(dataset, gloss) {
-		var glossData, i, cog, cogs = {}, keys, res = [];
+	var getGloss = function(dataset, gloss, inference) {
+		var glossData, cogs = {}, res = [];
+		var i, cog, keys;  // temps
+		var cogIndex = (inference == 'expert') ? 2 :
+						((inference == 'lexstat') ? 3 : 4);
 		
 		dataset = getDataset(dataset);
 		
@@ -92,7 +97,7 @@ app.data = (function() {
 		glossData = dataset[gloss];
 		
 		for(i = 0; i < glossData.length; i++) {
-			cog = glossData[i][2].toString();
+			cog = glossData[i][cogIndex].toString();
 			
 			if(!cogs.hasOwnProperty(cog)) {
 				cogs[cog] = [];
@@ -101,7 +106,7 @@ app.data = (function() {
 			cogs[cog].push({lang: glossData[i][0], word: glossData[i][1]});
 		}
 		
-		keys = Object.keys(cogs).sort();
+		keys = Object.keys(cogs).sort(String.naturalCompare);
 		for(i = 0; i < keys.length; i++) {
 			cog = keys[i];
 			res.push({cogClass: cog, entries: cogs[cog]});

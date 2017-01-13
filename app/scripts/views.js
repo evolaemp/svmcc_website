@@ -55,6 +55,7 @@ app.views = (function() {
 		
 		var glossViewElem = document.getElementById('gloss-view');
 		var searchField = $('[data-fn=choose-gloss]');
+		var radioButtons = $('[name=switch]');
 		
 		searchField.typeahead({minLength: 0, highlight: true}, {
 			name: 'glosses',
@@ -75,7 +76,8 @@ app.views = (function() {
 		});
 		
 		searchField.on('typeahead:select typeahead:autocomplete', function(e, value) {
-			createGloss(glossViewElem, dataset, value);
+			createGloss(glossViewElem, dataset, value,
+					radioButtons.filter(':checked').val());
 		});
 		
 		// make enter work as expected
@@ -90,16 +92,24 @@ app.views = (function() {
 			}
 		});
 		
-		// init a gloss view with the first gloss
+		// change the gloss view on changing the radio buttons
+		radioButtons.on('change', function(e) {
+			createGloss(glossViewElem, dataset,
+					searchField.typeahead('val'),
+					radioButtons.filter(':checked').val());
+		});
+		
+		// init a gloss view with the first gloss and expert cognate classes
 		searchField.typeahead('val', glosses[0]);
-		createGloss(glossViewElem, dataset, glosses[0]);
+		createGloss(glossViewElem, dataset, glosses[0], 'expert');
 	};
 	
 	// creates a gloss view
 	// this is the table displaying the lang:word pairs for a specific gloss
-	var createGloss = function(elem, dataset, gloss) {
+	// and inference method
+	var createGloss = function(elem, dataset, gloss, inference) {
 		render(elem, 'gloss-templ', {
-			cogs: app.data.getGloss(dataset, gloss)
+			cogs: app.data.getGloss(dataset, gloss, inference)
 		});
 	};
 	
