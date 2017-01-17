@@ -63,6 +63,9 @@ app.data = (function() {
 	
 	// returns the [] of all glosses found in the specified dataset
 	// throws an error if the dataset does not exist
+	// 
+	// the glosses are sorted case-insensitively so that abvd's Eight is not
+	// the very first gloss the user sees
 	var getGlosses = function(dataset) {
 		var key, glosses = [];
 		
@@ -73,6 +76,10 @@ app.data = (function() {
 				glosses.push(key);
 			}
 		}
+		
+		glosses = glosses.sort(function(a, b) {
+			return String.naturalCompare(a.toLowerCase(), b.toLowerCase());
+		});
 		
 		return glosses;
 	};
