@@ -9,8 +9,9 @@ setup
 =====
 
 ::
+
     npm install
     bower install
     npm run watch
 
-The last command also starts a development server on port 9000.
+The last command also starts a development server on ``localhost:9000``.
