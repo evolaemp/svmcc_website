@@ -18,6 +18,26 @@ app.views = (function() {
 		elem.innerHTML = rendered;
 	};
 	
+	// expects a [] of {}, a property that all the objects have to cluster
+	// against, and another property which all the objects will receive
+	// 
+	// returns the given [] modified, with the second property assigned to a
+	// number denoting the cluster the respective object belongs to
+	var cluster = function(li, prop, clusterProp) {
+		var i, last = null, cluster = 0;
+		
+		for(i = 0; i < li.length; i++) {
+			if(li[i][prop] !== last) {
+				last = li[i][prop];
+				cluster += 1;
+			}
+			
+			li[i][clusterProp] = cluster;
+		}
+		
+		return li;
+	};
+	
 	
 	// 
 	// view constructors
@@ -55,7 +75,6 @@ app.views = (function() {
 		
 		var glossViewElem = document.getElementById('gloss-view');
 		var searchField = $('[data-fn=choose-gloss]');
-		var radioButtons = $('[name=switch]');
 		
 		searchField.typeahead({minLength: 0, highlight: true}, {
 			name: 'glosses',
@@ -76,8 +95,7 @@ app.views = (function() {
 		});
 		
 		searchField.on('typeahead:select typeahead:autocomplete', function(e, value) {
-			createGloss(glossViewElem, dataset, value,
-					radioButtons.filter(':checked').val());
+			createGloss(glossViewElem, dataset, value);
 		});
 		
 		// make enter work as expected
@@ -92,25 +110,41 @@ app.views = (function() {
 			}
 		});
 		
-		// change the gloss view on changing the radio buttons
-		radioButtons.on('change', function(e) {
-			createGloss(glossViewElem, dataset,
-					searchField.typeahead('val'),
-					radioButtons.filter(':checked').val());
-		});
-		
-		// init a gloss view with the first gloss and expert cognate classes
+		// init a gloss view with the first gloss
 		searchField.typeahead('val', glosses[0]);
-		createGloss(glossViewElem, dataset, glosses[0], 'expert');
+		createGloss(glossViewElem, dataset, glosses[0]);
 	};
 	
 	// creates a gloss view
-	// this is the table displaying the lang:word pairs for a specific gloss
-	// and inference method
-	var createGloss = function(elem, dataset, gloss, inference) {
-		render(elem, 'gloss-templ', {
-			cogs: app.data.getGloss(dataset, gloss, inference)
+	// this is the table displaying the entries for a gloss
+	var createGloss = function(elem, dataset, gloss) {
+		render(elem, 'gloss-templ', {});
+		
+		var entries = app.data.getGloss(dataset, gloss);
+		
+		var table = $(elem).find('table');  // jquery elem!
+		var tbody = elem.querySelector('tbody');  // dom elem!
+		
+		var update = function(orderBy, rows) {
+			rows = cluster(rows, orderBy, 'cluster');
+			render(tbody, 'entries-templ', {rows: rows});
+		};
+		
+		table.find('th[data-order]').on('click', function(e) {
+			var orderBy = e.target.dataset.order;
+			
+			entries.sort(function(a, b) {
+				var x = String.naturalCompare(a[orderBy], b[orderBy]);
+				return (x == 0) ? String.naturalCompare(a.lang, b.lang) : x;
+			});
+			
+			update(orderBy, entries);
+			
+			table.find('th.chosen-th').removeClass('chosen-th');
+			e.target.classList.add('chosen-th');
 		});
+		
+		table.find('th[data-order]').first().click();
 	};
 	
 	// creates an error view

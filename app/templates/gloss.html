@@ -1,17 +1,14 @@
 <section class="gloss">
-	{{# cogs }}
-	<article class="cognate-class">
-		<h2>cognate class: <span class="cog-class-id">{{ cogClass }}</span></h2>
-		<table>
-			<tbody>
-				{{# entries }}
-				<tr>
-					<td class="lang">{{ lang }}</td>
-					<td class="word">{{ word }}</td>
-				</tr>
-				{{/ entries }}
-			</tbody>
-		</table>
-	</article>
-	{{/ cogs }}
-</section>	
+	<table>
+		<thead>
+			<tr>
+				<th>Doculect</th>
+				<th>Transcription</th>
+				<th data-order="expert">Expert</th>
+				<th data-order="lexstat">LexStat</th>
+				<th data-order="svm">SVM</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+</section>
