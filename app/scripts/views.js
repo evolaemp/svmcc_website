@@ -18,6 +18,26 @@ app.views = (function() {
 		elem.innerHTML = rendered;
 	};
 	
+	// expects a [] of {}, a property that all the objects have to cluster
+	// against, and another property which all the objects will receive
+	// 
+	// returns the given [] modified, with the second property assigned to a
+	// number denoting the cluster the respective object belongs to
+	var cluster = function(li, prop, clusterProp) {
+		var i, last = null, cluster = 0;
+		
+		for(i = 0; i < li.length; i++) {
+			if(li[i][prop] !== last) {
+				last = li[i][prop];
+				cluster += 1;
+			}
+			
+			li[i][clusterProp] = cluster;
+		}
+		
+		return li;
+	};
+	
 	
 	// 
 	// view constructors
@@ -96,11 +116,35 @@ app.views = (function() {
 	};
 	
 	// creates a gloss view
-	// this is the table displaying the lang:word pairs for a specific gloss
+	// this is the table displaying the entries for a gloss
 	var createGloss = function(elem, dataset, gloss) {
-		render(elem, 'gloss-templ', {
-			cogs: app.data.getGloss(dataset, gloss)
+		render(elem, 'gloss-templ', {});
+		
+		var entries = app.data.getGloss(dataset, gloss);
+		
+		var table = $(elem).find('table');  // jquery elem!
+		var tbody = elem.querySelector('tbody');  // dom elem!
+		
+		var update = function(orderBy, rows) {
+			rows = cluster(rows, orderBy, 'cluster');
+			render(tbody, 'entries-templ', {rows: rows});
+		};
+		
+		table.find('th[data-order]').on('click', function(e) {
+			var orderBy = e.target.dataset.order;
+			
+			entries.sort(function(a, b) {
+				var x = String.naturalCompare(a[orderBy], b[orderBy]);
+				return (x == 0) ? String.naturalCompare(a.lang, b.lang) : x;
+			});
+			
+			update(orderBy, entries);
+			
+			table.find('th.chosen-th').removeClass('chosen-th');
+			e.target.classList.add('chosen-th');
 		});
+		
+		table.find('th[data-order]').first().click();
 	};
 	
 	// creates an error view

@@ -36,13 +36,38 @@ app.data = (function() {
 		});
 	};
 	
-	// returns the [] of all dataset names found in the data
+	// returns a [] of {name, source} objects, one for each dataset
+	// 
+	// assumes that the datasets are already sorted in the json data: which
+	// should be true anyway
+	// 
+	// the sources are hardcoded.. for the time being at least
 	var getDatasets = function() {
 		var key, datasets = [];
+		var sources = {
+			'abvd': 'Greenhill et al, 2008',
+			'afrasian': 'Militarev, 2000',
+			'bai': 'Wang, 2006',
+			'central_asian': 'Manni et al, 2016',
+			'chinese_1964': 'Běijīng Dàxué, 1964',
+			'chinese_2004': 'Hóu, 2004',
+			'huon': 'McElhanon, 1967',
+			'ielex': 'Dunn, 2012',
+			'japanese': 'Hattori, 1973',
+			'kadai': 'Peiros, 1998',
+			'kamasau': 'Sanders, 1980',
+			'lolo_burmese': 'Peiros, 1998',
+			'mayan': 'Brown, 2008',
+			'miao_yao': 'Peiros, 1998',
+			'mixe_zoque': 'Cysouw et al, 2006',
+			'mon_khmer': 'Peiros, 1998',
+			'ob_ugrian': 'Zhivlov, 2011',
+			'tujia': 'Starostin, 2013'
+		}
 		
 		for(key in data) {
 			if(data.hasOwnProperty(key)) {
-				datasets.push(key);
+				datasets.push({name: key, source: sources[key]});
 			}
 		}
 		
@@ -63,6 +88,9 @@ app.data = (function() {
 	
 	// returns the [] of all glosses found in the specified dataset
 	// throws an error if the dataset does not exist
+	// 
+	// the glosses are sorted case-insensitively so that abvd's Eight is not
+	// the very first gloss the user sees
 	var getGlosses = function(dataset) {
 		var key, glosses = [];
 		
@@ -74,37 +102,36 @@ app.data = (function() {
 			}
 		}
 		
+		glosses = glosses.sort(function(a, b) {
+			return String.naturalCompare(a.toLowerCase(), b.toLowerCase());
+		});
+		
 		return glosses;
 	};
 	
-	// returns a [] of {cogClass, entries} objects where the entries are []s of
-	// {lang, word} objects
+	// returns a [] of {lang, word, expert, lexstat, svm} objects representing
+	// the entries for the specified gloss
 	// 
 	// throws an error if the dataset or the gloss do not exist
 	var getGloss = function(dataset, gloss) {
-		var glossData, i, cog, cogs = {}, keys, res = [];
+		var data, res = [];
+		var i;
 		
 		dataset = getDataset(dataset);
 		
 		if(!dataset.hasOwnProperty(gloss)) {
 			throw new Error('Unknown gloss');
 		}
-		glossData = dataset[gloss];
+		data = dataset[gloss];
 		
-		for(i = 0; i < glossData.length; i++) {
-			cog = glossData[i][2].toString();
-			
-			if(!cogs.hasOwnProperty(cog)) {
-				cogs[cog] = [];
-			}
-			
-			cogs[cog].push({lang: glossData[i][0], word: glossData[i][1]});
-		}
-		
-		keys = Object.keys(cogs).sort();
-		for(i = 0; i < keys.length; i++) {
-			cog = keys[i];
-			res.push({cogClass: cog, entries: cogs[cog]});
+		for(i = 0; i < data.length; i++) {
+			res.push({
+				lang: data[i][0],
+				word: data[i][1],
+				expert: data[i][2],
+				lexstat: data[i][3],
+				svm: data[i][4]
+			});
 		}
 		
 		return res;

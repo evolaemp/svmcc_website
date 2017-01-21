@@ -4,7 +4,8 @@
 		<div class="datasets-cont">
 			{{# datasets }}
 			<div class="dataset-cont">
-				<button type="button" data-fn="choose-dataset" data-set="{{ . }}">{{ . }}</button>
+				<button type="button" title="{{ source }}"
+					data-fn="choose-dataset" data-set="{{ name }}">{{ name }}</button>
 			</div>
 			{{/ datasets }}
 		</div>

@@ -97,8 +97,9 @@ button {
 			border-radius: 3px;
 			border: 1px solid @aquamarine;
 			color: @aquamarine;
+			display: inline-block;
 			padding: 3px 10px;
-			margin: 0 10px 0 0;
+			margin: 20px 10px 0 0;
 			text-decoration: none;
 
 			&:hover,
@@ -309,61 +310,85 @@ button {
 	padding: 0 50px 50px 50px;
 	margin: 0 auto;
 	max-width: 920px;
+	
+	background: white;
+	border-radius: 5px;
+	/* height: 300px; */
+	/* max-height: 300px; */
+	margin: 30px;
+	/* overflow: auto; */
+	/* width: 400px; */
 
-	.cognate-class {
-		.box(@p: 20px);
+	h2 {
+		border-bottom: 1px dotted @dark;
+		color: @dark;
+		font-size: 18px;
+		font-weight: normal;
+		padding: 5px 0;
+		margin: 0;
 
-		background: white;
-		border-radius: 5px;
-		height: 300px;
-		max-height: 300px;
-		margin: 30px;
-		overflow: auto;
-		width: 400px;
-
-		h2 {
-			border-bottom: 1px dotted @dark;
-			color: @dark;
-			font-size: 18px;
-			font-weight: normal;
-			padding: 5px 0;
-			margin: 0;
-
-			span {
-				font-weight: 700;
-			}
+		span {
+			font-weight: 700;
 		}
+	}
 
-		table {
-			padding: 10px 0;
-			width: 100%;
+	table {
+		padding: 10px 0;
+		width: 100%;
+	}
+
+	th {
+		font-weight: normal;
+		
+		&[data-order] {
+			cursor: pointer;
 		}
-
-		tr {
-			border-collapse: collapse;
-			padding: 5px 0;
-			width: 100%;
-
-			&:nth-child(odd) {
-				background: #eee;
-			}
-		}
-
-		td {
-			color: @dark;
-			padding: 4px 10px;
-		}
-
-		.lang {
-			display: inline-block;
+		
+		&.chosen-th {
 			font-weight: bold;
-			padding: 4px 10px;
-			min-width: 175px;
 		}
+	}
 
-		.word {
-			font-family: "Noto Sans", sans-serif;
+	tr {
+		border-collapse: collapse;
+		padding: 5px 0;
+		width: 100%;
+
+		&:nth-child(odd) {
+			background: #eee;
 		}
+		
+		&.cluster1, &.cluster6 {
+			background-color: red;
+		}
+		&.cluster2, &.cluster7 {
+			background-color: orange;
+		}
+		&.cluster3, &.cluster8 {
+			background-color: magenta;
+		}
+		&.cluster4, &.cluster9 {
+			background-color: green;
+		}
+		&.cluster5, &.cluster10 {
+			background-color: blue;
+		}
+	}
+
+	td {
+		color: @dark;
+		padding: 4px 10px;
+	}
+
+	.lang {
+		display: inline-block;
+		font-weight: bold;
+		padding: 4px 10px;
+		width: 175px;
+	}
+
+	.word {
+		font-family: "Noto Sans", sans-serif;
 	}
 }
 
