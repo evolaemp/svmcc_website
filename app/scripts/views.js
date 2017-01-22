@@ -118,9 +118,13 @@ app.views = (function() {
 	// creates a gloss view
 	// this is the table displaying the entries for a gloss
 	var createGloss = function(elem, dataset, gloss) {
-		render(elem, 'gloss-templ', {});
-		
 		var entries = app.data.getGloss(dataset, gloss);
+		
+		render(elem, 'gloss-templ', {
+			'dataset': dataset,
+			'gloss': gloss,
+			'numWords': entries.length
+		});
 		
 		var table = $(elem).find('table');  // jquery elem!
 		var tbody = elem.querySelector('tbody');  // dom elem!
