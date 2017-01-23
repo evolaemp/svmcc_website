@@ -123,6 +123,7 @@ app.views = (function() {
 		render(elem, 'gloss-templ', {
 			'dataset': dataset,
 			'gloss': gloss,
+			'concepticonId': app.data.getConcepticonId(dataset, gloss),
 			'numWords': entries.length
 		});
 		

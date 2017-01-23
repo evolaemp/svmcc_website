@@ -42,9 +42,12 @@ def get_inferred(inferred_dir, suffix):
 
 def read_dataset(dataset_path):
 	"""
-	Returns the {gloss: [[lang, trans, cog_class],]} dict of the given dataset.
+	Returns a tuple of three dicts. The gloss data is a {gloss: [[lang, trans,
+	cog_class],]} dict. The concepticon data is a {gloss: global_id} dict. The
+	language data is a {lang: iso_code} dict.
 	"""
 	data = collections.defaultdict(list)
+	gloss_ids = {}
 	
 	with open(dataset_path, newline='', encoding='utf-8') as f:
 		reader = csv.DictReader(f, delimiter='\t')
@@ -52,8 +55,9 @@ def read_dataset(dataset_path):
 			li = [row['language'], row['transcription'], row['cognate_class']]
 			if li not in data[row['gloss']]:
 				data[row['gloss']].append(li)
+			gloss_ids[row['gloss']] = row['global_id']
 	
-	return dict(data)
+	return dict(data), gloss_ids
 
 
 
@@ -127,18 +131,27 @@ def enrich_data(data, inferred_files):
 
 def compile_data(datasets_dir, inferred_dir, output_path):
 	"""
-	Returns a helpful string reporting the number of entries taken from each
-	dataset for the json output.
+	Compiles the data and writes a {dataset: {gloss: [global_id, [lang, word,
+	expert, lexstat, svm]]}} dict to the specified path in json format.
+	
+	Returns a string reporting the number of entries taken from each dataset.
 	"""
-	data = {}
-	counts = {}
+	data = {}  # dataset: {gloss: [[lang, trans, cog_class, ..]]}
+	counts = {}  # dataset: number of glosses
+	gloss_ids = {}  # dataset: {gloss: global_id}
 	
 	for name, path in get_datasets(datasets_dir):
-		data[name] = read_dataset(path)
+		data[name], gloss_ids[name] = read_dataset(path)
 		counts[name] = sum([len(li) for li in data[name].values()])
 	
 	enrich_data(data, get_inferred(inferred_dir, 'lsCC'))
 	enrich_data(data, get_inferred(inferred_dir, 'svmCC'))
+	
+	data = {
+		set_name: {
+			gloss: [gloss_ids[set_name][gloss]] + li
+			for gloss, li in set_data.items()}
+		for set_name, set_data in data.items()}
 	
 	with open(output_path, 'w', encoding='utf-8') as f:
 		json.dump(data, f, ensure_ascii=False, sort_keys=True)

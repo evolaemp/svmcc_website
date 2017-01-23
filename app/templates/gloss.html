@@ -1,8 +1,10 @@
 <section class="gloss">
 	<p>
 		Showing <strong>{{ numWords }}</strong> words
-		in the <strong>{{ dataset }}</strong> dataset
-		for the concept <a href="" title="Concepticon entry for {{ gloss }}"><strong>{{ gloss }}</strong></a>
+		in the <strong>{{ dataset }}</strong> dataset for the concept
+		<a href="http://concepticon.clld.org/parameters/{{ concepticonId }}"
+			title="Concepticon entry for {{ gloss }}"
+			><strong>{{ gloss }} ({{ concepticonId }})</strong></a>
 	</p>
 	<table>
 		<thead>

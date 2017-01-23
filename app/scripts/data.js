@@ -7,6 +7,7 @@ app.data = (function() {
 	// state
 	// 
 	
+	// {dataset: {gloss: [global_id, [lang, word, expert, lexstat, svm]]}}
 	var data = {};
 	
 	
@@ -124,7 +125,7 @@ app.data = (function() {
 		}
 		data = dataset[gloss];
 		
-		for(i = 0; i < data.length; i++) {
+		for(i = 1; i < data.length; i++) {
 			res.push({
 				lang: data[i][0],
 				word: data[i][1],
@@ -137,6 +138,20 @@ app.data = (function() {
 		return res;
 	};
 	
+	// returns the Concepticon ID of the specified gloss
+	// this is stored as the very first element of the gloss data list
+	// 
+	// throws an error if the dataset or the gloss do not exist
+	var getConcepticonId = function(dataset, gloss) {
+		dataset = getDataset(dataset);
+		
+		if(!dataset.hasOwnProperty(gloss)) {
+			throw new Error('Unknown gloss');
+		}
+		
+		return dataset[gloss][0];
+	};
+	
 	
 	// 
 	// exports
@@ -146,7 +161,8 @@ app.data = (function() {
 		load: load,
 		getDatasets: getDatasets,
 		getGlosses: getGlosses,
-		getGloss: getGloss
+		getGloss: getGloss,
+		getConcepticonId: getConcepticonId
 	};
 	
 }());
