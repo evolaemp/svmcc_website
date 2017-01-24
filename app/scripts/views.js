@@ -21,8 +21,8 @@ app.views = (function() {
 	// expects a [] of {}, a property that all the objects have to cluster
 	// against, and another property which all the objects will receive
 	// 
-	// returns the given [] modified, with the second property assigned to a
-	// number denoting the cluster the respective object belongs to
+	// returns the given [] modified, with the second property assigned to
+	// either 'odd' or 'even' depending on the cluster
 	var cluster = function(li, prop, clusterProp) {
 		var i, last = null, cluster = 0;
 		
@@ -32,7 +32,7 @@ app.views = (function() {
 				cluster += 1;
 			}
 			
-			li[i][clusterProp] = cluster;
+			li[i][clusterProp] = (cluster % 2) ? 'odd' : 'even';
 		}
 		
 		return li;
