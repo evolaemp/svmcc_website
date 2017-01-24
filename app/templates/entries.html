@@ -1,6 +1,12 @@
 {{# rows }}
 <tr class="cluster cluster{{ cluster }}">
-	<td class="lang">{{ lang }}</td>
+	<td class="lang">
+		{{ lang }}
+		{{# isoCode }}
+		<a href="http://www-01.sil.org/iso639-3/documentation.asp?id={{ isoCode }}"
+			title="ISO code of {{ lang }}">[{{ isoCode }}]</a>
+		{{/ isoCode }}
+	</td>
 	<td class="word">{{ word }}</td>
 	<td class="expert">{{ expert }}</td>
 	<td class="lexstat">{{ lexstat }}</td>

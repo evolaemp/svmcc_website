@@ -7,7 +7,8 @@ app.data = (function() {
 	// state
 	// 
 	
-	// {dataset: {gloss: [global_id, [lang, word, expert, lexstat, svm]]}}
+	// {dataset: {gloss: [global_id, [lang, word, expert, lexstat, svm]],
+	// _langs: {lang: iso}}}
 	var data = {};
 	
 	
@@ -98,7 +99,7 @@ app.data = (function() {
 		dataset = getDataset(dataset);
 		
 		for(key in dataset) {
-			if(dataset.hasOwnProperty(key)) {
+			if(dataset.hasOwnProperty(key) && key[0] != '_') {
 				glosses.push(key);
 			}
 		}
@@ -110,13 +111,13 @@ app.data = (function() {
 		return glosses;
 	};
 	
-	// returns a [] of {lang, word, expert, lexstat, svm} objects representing
-	// the entries for the specified gloss
+	// returns a [] of {lang, isoCode, word, expert, lexstat, svm} objects
+	// representing the entries for the specified gloss
 	// 
 	// throws an error if the dataset or the gloss do not exist
 	var getGloss = function(dataset, gloss) {
-		var data, res = [];
-		var i;
+		var data, isoCodes;
+		var i, res = [];
 		
 		dataset = getDataset(dataset);
 		
@@ -124,10 +125,12 @@ app.data = (function() {
 			throw new Error('Unknown gloss');
 		}
 		data = dataset[gloss];
+		isoCodes = dataset._langs;
 		
 		for(i = 1; i < data.length; i++) {
 			res.push({
 				lang: data[i][0],
+				isoCode: isoCodes[data[i][0]],
 				word: data[i][1],
 				expert: data[i][2],
 				lexstat: data[i][3],

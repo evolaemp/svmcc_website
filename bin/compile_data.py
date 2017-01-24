@@ -44,10 +44,11 @@ def read_dataset(dataset_path):
 	"""
 	Returns a tuple of three dicts. The gloss data is a {gloss: [[lang, trans,
 	cog_class],]} dict. The concepticon data is a {gloss: global_id} dict. The
-	language data is a {lang: iso_code} dict.
+	ISO codes data is a {lang: iso_code} dict.
 	"""
 	data = collections.defaultdict(list)
 	gloss_ids = {}
+	iso_codes = {}
 	
 	with open(dataset_path, newline='', encoding='utf-8') as f:
 		reader = csv.DictReader(f, delimiter='\t')
@@ -56,8 +57,9 @@ def read_dataset(dataset_path):
 			if li not in data[row['gloss']]:
 				data[row['gloss']].append(li)
 			gloss_ids[row['gloss']] = row['global_id']
+			iso_codes[row['language']] = row['iso_code']
 	
-	return dict(data), gloss_ids
+	return dict(data), gloss_ids, iso_codes
 
 
 
@@ -132,16 +134,19 @@ def enrich_data(data, inferred_files):
 def compile_data(datasets_dir, inferred_dir, output_path):
 	"""
 	Compiles the data and writes a {dataset: {gloss: [global_id, [lang, word,
-	expert, lexstat, svm]]}} dict to the specified path in json format.
+	expert, lexstat, svm]], _langs: {lang: iso_code}}} dict to the specified
+	path in json format.
 	
 	Returns a string reporting the number of entries taken from each dataset.
 	"""
 	data = {}  # dataset: {gloss: [[lang, trans, cog_class, ..]]}
 	counts = {}  # dataset: number of glosses
+	
 	gloss_ids = {}  # dataset: {gloss: global_id}
+	iso_codes = {}  # dataset: {lang: iso_code}
 	
 	for name, path in get_datasets(datasets_dir):
-		data[name], gloss_ids[name] = read_dataset(path)
+		data[name], gloss_ids[name], iso_codes[name] = read_dataset(path)
 		counts[name] = sum([len(li) for li in data[name].values()])
 	
 	enrich_data(data, get_inferred(inferred_dir, 'lsCC'))
@@ -152,6 +157,9 @@ def compile_data(datasets_dir, inferred_dir, output_path):
 			gloss: [gloss_ids[set_name][gloss]] + li
 			for gloss, li in set_data.items()}
 		for set_name, set_data in data.items()}
+	
+	for set_name, set_data in data.items():
+		set_data['_langs'] = iso_codes[set_name]
 	
 	with open(output_path, 'w', encoding='utf-8') as f:
 		json.dump(data, f, ensure_ascii=False, sort_keys=True)
