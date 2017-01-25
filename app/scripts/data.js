@@ -114,6 +114,9 @@ app.data = (function() {
 	// returns a [] of {lang, isoCode, word, expert, lexstat, svm} objects
 	// representing the entries for the specified gloss
 	// 
+	// in language names underscores are replaced by spaces in order to avoid
+	// cell-breaking in mayan
+	// 
 	// throws an error if the dataset or the gloss do not exist
 	var getGloss = function(dataset, gloss) {
 		var data, isoCodes;

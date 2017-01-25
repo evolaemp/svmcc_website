@@ -115,6 +115,28 @@ button {
 		color: white;
 		max-width: 920px;
 	}
+
+	a.arrow {
+		border: none;
+		display: inline-block;
+		text-decoration: none;
+		&:hover, &:focus {
+			border: none;
+		}
+		.stroke {
+			background: @aquamarine;
+			display: inline-block;
+			height: 20px;
+			width: 5px;
+
+			&:first-child {
+				transform: rotate(-45deg) translateX(-1px);
+			}
+			&:nth-child(2) {
+				transform: rotate(45deg) translateX(1px);
+			}
+		}
+	}
 }
 
 .data {

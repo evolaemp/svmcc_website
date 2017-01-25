@@ -1,5 +1,6 @@
 #!/bin/bash
 uglifyjs \
+	bower_components/smoothscroll/dist/smoothscroll.js \
 	bower_components/jquery/dist/jquery.slim.js \
 	bower_components/promise-polyfill/promise.js \
 	bower_components/fetch/fetch.js \
