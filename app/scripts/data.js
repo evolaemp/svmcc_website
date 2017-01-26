@@ -132,7 +132,7 @@ app.data = (function() {
 		
 		for(i = 1; i < data.length; i++) {
 			res.push({
-				lang: data[i][0],
+				lang: data[i][0].replace(/_/g, ' '),
 				isoCode: isoCodes[data[i][0]],
 				word: prison.plotWord(data[i][1]),
 				expert: data[i][2],
