@@ -15,4 +15,6 @@ concurrently --raw --kill-others \
 	"chokidar 'app/index.html' -c 'bin/build_html.sh'" \
 	"chokidar 'app/styles/*.less' -c 'bin/build_css.sh'" \
 	"chokidar 'app/scripts/**/*.js' -c 'bin/build_js.sh'" \
+	"chokidar 'app/vendor/*.css' -c 'bin/build_css.sh'" \
+	"chokidar 'app/vendor/*.js' -c 'bin/build_js.sh'" \
 	"ecstatic --root build --port 9000 --cache 0"

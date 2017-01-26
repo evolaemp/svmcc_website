@@ -43,8 +43,8 @@ def get_inferred(inferred_dir, suffix):
 def read_dataset(dataset_path):
 	"""
 	Returns a tuple of three dicts. The gloss data is a {gloss: [[lang, trans,
-	cog_class],]} dict. The concepticon data is a {gloss: global_id} dict. The
-	ISO codes data is a {lang: iso_code} dict.
+	segments, cog_class],]} dict. The concepticon data is a {gloss: global_id}
+	dict. The ISO codes data is a {lang: iso_code} dict.
 	"""
 	data = collections.defaultdict(list)
 	gloss_ids = {}
@@ -53,9 +53,13 @@ def read_dataset(dataset_path):
 	with open(dataset_path, newline='', encoding='utf-8') as f:
 		reader = csv.DictReader(f, delimiter='\t')
 		for row in reader:
-			li = [row['language'], row['transcription'], row['cognate_class']]
+			li = [
+				row['language'], row['transcription'],
+				row['tokens'], row['cognate_class']]
+			
 			if li not in data[row['gloss']]:
 				data[row['gloss']].append(li)
+			
 			gloss_ids[row['gloss']] = row['global_id']
 			iso_codes[row['language']] = row['iso_code']
 	
@@ -139,7 +143,7 @@ def compile_data(datasets_dir, inferred_dir, output_path):
 	
 	Returns a string reporting the number of entries taken from each dataset.
 	"""
-	data = {}  # dataset: {gloss: [[lang, trans, cog_class, ..]]}
+	data = {}  # dataset: {gloss: [[lang, trans, segments, cog_class, ..]]}
 	counts = {}  # dataset: number of glosses
 	
 	gloss_ids = {}  # dataset: {gloss: global_id}
@@ -152,9 +156,12 @@ def compile_data(datasets_dir, inferred_dir, output_path):
 	enrich_data(data, get_inferred(inferred_dir, 'lsCC'))
 	enrich_data(data, get_inferred(inferred_dir, 'svmCC'))
 	
+	def remove_trans(gloss_li):
+		return [li[:1] + li[2:] for li in gloss_li]
+	
 	data = {
 		set_name: {
-			gloss: [gloss_ids[set_name][gloss]] + li
+			gloss: [gloss_ids[set_name][gloss]] + remove_trans(li)
 			for gloss, li in set_data.items()}
 		for set_name, set_data in data.items()}
 	

@@ -4,6 +4,9 @@
 // 
 // the reason not to include it with the other bwoer dependencies is that the
 // minified prison lib is 1,6 mb and only this particular file is needed
+// 
+// apart from wrapping it up, the other difference with the original is
+// removing the trailing spaces within the output tags of plotWord()
 var prison = (function() {
 	
 	"use strict";
@@ -356,18 +359,18 @@ var prison = (function() {
 		else if(phon == ')'){}
 		else if(phon != '-'){
 			if(!ignore){
-			text += '<'+tag+' class="residue'+classes+dolgo+'">'+phon+' </'+tag+'>';
+			text += '<'+tag+' class="residue'+classes+dolgo+'">'+phon+'</'+tag+'>';
 			}
 			else {
-			text += '<'+tag+' class="residue'+classes+dolgo+' dolgo_IGNORE">'+phon+' </'+tag+'>';
+			text += '<'+tag+' class="residue'+classes+dolgo+' dolgo_IGNORE">'+phon+'</'+tag+'>';
 			}
 		}
 		else  {
 			if(!ignore){
-			text += '<'+tag+' class="residue '+classes+dolgo+'">'+phon+' </'+tag+'>';
+			text += '<'+tag+' class="residue '+classes+dolgo+'">'+phon+'</'+tag+'>';
 			}
 			else {
-			text += '<'+tag+' class="residue'+classes+dolgo+' dolgo_IGNORE">'+phon+' </'+tag+'>';
+			text += '<'+tag+' class="residue'+classes+dolgo+' dolgo_IGNORE">'+phon+'</'+tag+'>';
 			}
 		}
 		}

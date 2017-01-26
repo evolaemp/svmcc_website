@@ -134,7 +134,7 @@ app.data = (function() {
 			res.push({
 				lang: data[i][0],
 				isoCode: isoCodes[data[i][0]],
-				word: data[i][1],
+				word: prison.plotWord(data[i][1]),
 				expert: data[i][2],
 				lexstat: data[i][3],
 				svm: data[i][4]
